@@ -2,7 +2,6 @@ import feedparser
 import requests
 from bs4 import BeautifulSoup
 
-#check the git
 
 def fetch_nyt_posts():
     rss_url = "https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"
