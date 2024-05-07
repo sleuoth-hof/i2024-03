@@ -64,5 +64,3 @@ if nyt_posts:
         print("\n")
 else:
     print("Failed to fetch NYT posts.")
-
-# check the push
