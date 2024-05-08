@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header id="header" class="fixed-top">
+        <nav class="navbar navbar-expand-lg custom-navbar">
+            <div class="container-fluid">
+                <a href="#" class="navbar-brand d-flex align-items-center">
+                    <img src="profit.png" alt="Logo" class="logo-image">
+                    <span class="ms-2 text-white">Market Analysis</span>
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navContent">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="#stock-symbols" class="nav-link">Stock Symbols</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#rss-feed" class="nav-link">RSS Feed</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#market-prediction" class="nav-link">Market Prediction</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Containers -->
+    <main>
+        <!-- Stock Symbols Section -->
+        <section id="stock-symbols" class="content-container stock-section scroll-offset">
+            <div class="container d-flex flex-wrap justify-content-center gap-4">
+                <!-- Left Large Container -->
+                <div class="stock-list-container">
+                    <div class="search-bar">
+                        <input type="text" class="form-control" placeholder="Search Stock...">
+                        <button class="btn btn-light search-btn">Search</button>
+                    </div>
+                    <table class="table stock-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Price</th>
+                                <th>Change</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>AAPL</td>
+                                <td>173.5</td>
+                                <td>+16.3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Right Side Containers -->
+                <div class="right-side-container d-flex flex-column gap-4">
+                    <!-- First Small Container -->
+                    <div class="company-info-container">
+                        <h5>BA</h5>
+                        <p>The Boeing Company</p>
+                        <button class="btn btn-light go-back-btn">Go Back</button>
+                    </div>
+
+                    <!-- Second Small Container -->
+                    <div class="chart-container">
+                        <h5>Graph Placeholder</h5>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RSS Feed Section -->
+        <section id="rss-feed" class="content-container rss-section scroll-offset">
+            <div class="section-content">
+                <h2>RSS Feed</h2>
+                <p>Details about RSS feeds...</p>
+            </div>
+        </section>
+
+        <!-- Market Prediction Section -->
+        <section id="market-prediction" class="content-container prediction-section scroll-offset">
+            <div class="section-content">
+                <h2>Market Prediction</h2>
+                <p>Information about market prediction...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-container blue-bg">
+        <div class="section-content">
+            <a href="#" class="navbar-brand d-flex align-items-center">
+                <img src="profit.png" alt="Logo" class="logo-image">
+                <span class="ms-2 text-white"></span>
+            </a>
+            <p>All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
