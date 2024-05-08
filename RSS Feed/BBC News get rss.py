@@ -21,6 +21,7 @@ for entry in feed.entries:
         paragraphs = soup.find_all("p")
         for paragraph in paragraphs:
             news_text += paragraph.text + "\n"
+        news_text.split()
 
         print(">>> News title:", news_title)
         print(">>> News content:", news_text)
