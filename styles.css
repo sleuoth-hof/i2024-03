@@ -1,6 +1,6 @@
 /* General styles */
 body {
-    padding-top: 147px; /* Adjusted to match navbar height */
+    padding-top: 147px; 
 }
 
 /* Custom Navbar */
@@ -29,7 +29,7 @@ body {
 }
 
 .navbar-nav .nav-link:hover {
-    background-color: #d3d3d3; /* Light grey hover effect */
+    background-color: #d3d3d3; 
     border-radius: 4px;
     color: #003366 !important;
 }
@@ -62,7 +62,7 @@ body {
 
 /* Specific Section Classes */
 .stock-section {
-    background-color: #e6f7ff; /* Light blue tint */
+    background-color: #e6f7ff; 
 }
 
 .rss-section {
@@ -71,16 +71,7 @@ body {
 }
 
 .prediction-section {
-    background-color: #ffffff; /* White background */
-}
-
-/* Footer container */
-.footer-container {
-    width: 100%;
-    height: 200px; /* Adjust this height as needed */
-    padding: 40px 20px; /* Inner padding */
-    background-color: #003366;
-    color: white;
+    background-color: #ffffff; 
 }
 
 /* Section Content */
@@ -167,7 +158,7 @@ body {
 /*not sure if we will need it*/
 .go-back-btn {
     float: right;
-    margin-top: 5px;
+    margin-top: -55px;
 }
 
 .chart-container {
@@ -177,4 +168,87 @@ body {
     align-items: center;
     text-align: center;
     min-height: 380px;
+}
+/* Footer container */
+.footer-container {
+    width: 100%;
+    height: auto;
+    padding: 40px 20px;
+    background-color: #003366;
+    color: white;
+}
+
+.footer-left p {
+    margin-top: 20px;
+}
+
+.footer-right a {
+    color: white;
+    margin-right: 10px;
+}
+
+.footer-right a:hover {
+    color: #d3d3d3; 
+}
+
+/* Adjust the logo image */
+.logo-image {
+    width: 60px;
+    height: auto;
+}
+
+/* Adjust the Market Analysis text */
+.navbar-brand span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.rss-container{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    min-height: 30px;
+    margin-left: 40px;
+}
+/* Market Prediction Section */
+
+.prediction-text {
+    width: 45%;
+    padding: 50px;
+    background-color: #003366;
+    border-radius: 15px;
+    color: #ffffff;
+}
+
+.footer-container {
+    width: 100%;
+    padding: 40px 20px;
+    background-color: #003366;
+    color: white;
+}
+
+.footer-left p {
+    margin-top: 20px;
+}
+
+.footer-right a {
+    color: white;
+    margin-right: 10px;
+}
+
+.footer-right a:hover {
+    color: #d3d3d3; 
+}
+
+.logo-image {
+    width: 60px;
+    height: auto;
+}
+
+.navbar-brand span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
 }
