@@ -1,0 +1,206 @@
+/* General styles */
+body {
+    padding-top: 100px; /* Reduced padding-top to make the space between the navbar and sections smaller */
+}
+
+/* Section Styles */
+#stock-symbols,
+#rss-feed,
+#market-prediction {
+    width: 100%;
+    padding: 0;
+    position: relative;
+    min-height: 600px; /* Set a minimum height for each section to ensure uniformity */
+}
+
+#stock-symbols.scroll-offset,
+#rss-feed.scroll-offset,
+#market-prediction.scroll-offset {
+    margin-top: auto;
+    padding-top: 100px; /* Reduced padding-top to match body padding */
+}
+
+.white-bg {
+    background-color: #ffffff;
+}
+
+.blue-bg {
+    background-color: #343a40;
+    color: white;
+}
+
+/* Specific Section Classes */
+.stock-section {
+    background-color: #ffffff;
+}
+
+.rss-section {
+    background-color: #343a40;
+    color: white;
+}
+
+.prediction-section {
+    background-color: #ffffff;
+}
+
+/* Section Content */
+.section-content {
+    margin: 10px 40px 0 40px;
+    padding-top: 0;
+    text-align: left;
+}
+
+.section-content h2 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.section-content p {
+    font-size: 1.1rem;
+}
+
+.logo-image {
+    width: 60px;
+    height: auto;
+}
+
+.text-dark-blue {
+    color: #343a40;
+}
+
+/* Left Stock List Container */
+.stock-list-container {
+    background-color: #343a40;
+    color: white;
+    padding: 15px;
+    border-radius: 15px;
+    height: 100%;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.search-bar input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.search-btn {
+    width: 70px;
+}
+
+.stock-table th, .stock-table td {
+    color: white;
+    text-align: left;
+}
+
+/* Right Containers (two stacked smaller containers) */
+.company-info-container, .chart-container, .rss-container {
+    background-color: #343a40;
+    color: white;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+.go-back-btn {
+    float: right;
+    margin-top: -55px;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 200px;
+}
+
+/* Footer container */
+.footer-container {
+    width: 100%;
+    height: auto;
+    padding: 40px 20px;
+    background-color: #343a40;
+    color: white;
+}
+
+.footer-left p {
+    margin-top: 20px;
+}
+
+.footer-right a {
+    color: white;
+    margin-right: 10px;
+}
+
+.footer-right a:hover {
+    color: #d3d3d3;
+}
+
+/* Adjust the logo image */
+.logo-image {
+    width: 60px;
+    height: auto;
+}
+
+/* Adjust the Market Analysis text */
+.navbar-brand span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.rss-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    min-height: 30px;
+    margin-left: 40px;
+}
+
+/* Market Prediction Section */
+.prediction-text {
+    width: 100%;
+    max-width: 100%;
+    padding: 50px;
+    background-color: #343a40;
+    border-radius: 15px;
+    color: #ffffff;
+}
+
+.footer-container {
+    width: 100%;
+    padding: 40px 20px;
+    background-color: #343a40;
+    color: white;
+}
+
+.footer-left p {
+    margin-top: 20px;
+}
+
+.footer-right a {
+    color: white;
+    margin-right: 10px;
+}
+
+.footer-right a:hover {
+    color: #d3d3d3;
+}
+
+.logo-image {
+    width: 60px;
+    height: auto;
+}
+
+.navbar-brand span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
