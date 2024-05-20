@@ -7,6 +7,7 @@ import requests
 
 def getCoindeskFeed():
     url = "https://www.coindesk.com/"
+    website_name = "coindesk.com"
 
     html_doc = requests.get(url)
     # response - answer. make get request to take html document of url
@@ -41,7 +42,7 @@ def getCoindeskFeed():
         print("text: " + article_text)
         print("")
 
-        feed += [title, link, formatted_date, article_text]
+        feed += [website_name, title, link, formatted_date, article_text]
     return feed
 
 
