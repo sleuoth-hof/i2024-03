@@ -32,7 +32,7 @@ def getCoindeskFeed():
         article_date = article_soup.find(class_="typography__StyledTypography-sc-owin6q-0 iOUkmj").text.strip().replace(
             "p.m.", "PM").replace("a.m.", "AM")
         date_object = datetime.strptime(article_date, "%B %d, %Y at %I:%M %p UTC")
-        formatted_date = date_object.strftime("%Y:%m:%d:%H:%M")
+        formatted_date = date_object.strftime("%Y-%m-%d %H:%M:%S")
         print(formatted_date)
 
         article_content = article_soup.find(class_="contentstyle__StyledWrapper-sc-g5cdrh-0 gkcZwU composer-content")
