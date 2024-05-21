@@ -1,4 +1,5 @@
 from django.db import models
+
 class NewsEvaluation(models.Model):
     news_date = models.DateField()  
     news_name = models.CharField(max_length=500)
