@@ -1,3 +1,4 @@
+Link: https://docs.google.com/document/d/1DX7cFbrRc2wL0-W6Nk_aiMcFalggzMk_nkQrVUwQrYA/edit?usp=sharing
 Project Structure
 The project follows a Django-standard structure with a main project folder and an app named tradingbot. The app contains folders for models, controllers, and views.
 Models
