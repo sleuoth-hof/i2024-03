@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from tradingbot.views.views import EvaluateNewsAPIView; 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("evaluate-news/",EvaluateNewsAPIView(),name= EvaluateNewsAPIView),
 ]
