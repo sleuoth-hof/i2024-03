@@ -1,6 +1,7 @@
 import csv
 from Feed.coindesk import getCoindeskFeed
 
+
 def collect_feed():
     all_feed = []
     all_feed += getCoindeskFeed()
@@ -13,7 +14,7 @@ def existing_titles_list(csv_file_name):
         with open(csv_file_name, 'r', encoding='utf-8') as csv_file:
             csv_reader = csv.reader(csv_file)
             next(csv_reader)
-            for row in csv_reader0:
+            for row in csv_reader:
                 if len(row) > 1:
                     existing_titles.append(row[1])
         return existing_titles
