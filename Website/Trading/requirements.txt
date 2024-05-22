@@ -1,5 +1,5 @@
 Django>=3.0,<4.0
 psycopg2-binary>=2.8
 newsmodel~=0.28
-requests~=2.31.0
+requests~=2.32.0
 finnhub-python~=2.4.19
