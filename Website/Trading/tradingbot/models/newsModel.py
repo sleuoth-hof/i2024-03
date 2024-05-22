@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class News(models.Model):
     category = models.CharField(max_length=100)
     datetime = models.DateTimeField()
