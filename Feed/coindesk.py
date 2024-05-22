@@ -39,6 +39,7 @@ def getCoindeskFeed():
         article_content = article_soup.find(class_="contentstyle__StyledWrapper-sc-g5cdrh-0 gkcZwU composer-content")
         article_text = article_content.text.strip()
         # strip() - delete the big spaces
+
         print("text: " + article_text)
         print("")
 
