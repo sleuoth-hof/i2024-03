@@ -5,7 +5,7 @@ from datetime import datetime
 import requests
 
 
-def getCoindeskFeed():
+def get_coindesk_feed():
     url = "https://www.coindesk.com/"
     website_name = "coindesk.com"
 
@@ -43,8 +43,8 @@ def getCoindeskFeed():
         print("text: " + article_text)
         print("")
 
-        feed += [website_name, title, link, formatted_date, article_text]
+        feed.append([website_name, title, link, formatted_date, article_text])
     return feed
 
 
-print(getCoindeskFeed())
+# print(getCoindeskFeed())
