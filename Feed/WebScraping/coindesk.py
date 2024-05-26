@@ -15,7 +15,6 @@ def get_coindesk_feed():
     soup = BeautifulSoup(html_doc.text, 'html.parser')
 
     newses = soup.find_all(class_="static-cardstyles__StaticCardWrapper-sc-1kiw3u-0 iiwocm")
-
     feed = []
 
     # into news blocks
@@ -47,4 +46,4 @@ def get_coindesk_feed():
     return feed
 
 
-# print(getCoindeskFeed())
+print(get_coindesk_feed())
