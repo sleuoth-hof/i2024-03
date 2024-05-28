@@ -81,9 +81,9 @@ class ProcessNewsView(APIView):
                         advice=item['advice']
                     )
             else:
-                return Response({"error": "error in with statuscode {}".format(response.status_code)}, status=400)
+                return Response({"error": "Fehler bei der Anfrage. Statuscode: {}".format(response.status_code)}, status=400)
         
-        return Response({"message": "Datas are saved ."}, status=200)
+        return Response({"message": "Daten erfolgreich verarbeitet und gespeichert."}, status=200)
 
     def get(self, request):
         recommendations = StockRecommendation.objects.all()
