@@ -33,7 +33,7 @@ def get_coindesk_feed():
             "p.m.", "PM").replace("a.m.", "AM")
         date_object = datetime.strptime(article_date, "%B %d, %Y at %I:%M %p UTC")
         formatted_date = date_object.strftime("%Y-%m-%d %H:%M:%S")
-        print(formatted_date)
+        print("date: " + formatted_date)
 
         article_content = article_soup.find(class_="contentstyle__StyledWrapper-sc-g5cdrh-0 gkcZwU composer-content")
         article_text = article_content.text.strip()
@@ -46,4 +46,4 @@ def get_coindesk_feed():
     return feed
 
 
-print(get_coindesk_feed())
+# print(get_coindesk_feed())
