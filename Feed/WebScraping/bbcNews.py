@@ -15,15 +15,11 @@ def get_bbc_news_feed():
 
     for news in newses.entries:
         title = news.title
-        print("title: " + title)
-
         link = news.link
-        print("link: " + link)
 
         article_date = news.published
         article_date = parse(article_date)
         formatted_date = article_date.strftime("%Y-%m-%d %H:%M:%S")
-        print("date: " + formatted_date)
 
         response = requests.get(link)
 
@@ -36,12 +32,9 @@ def get_bbc_news_feed():
                 news_text += paragraph.text + ". "
             news_text.split()
 
-            print("text: " + news_text)
-            print("")
-
             feed.append([website_name, title, link, formatted_date, news_text])
         else:
-            print("Error:", response.status_code)
+            print(">>> bbcNews response Error:", response.status_code)
 
     return feed
 

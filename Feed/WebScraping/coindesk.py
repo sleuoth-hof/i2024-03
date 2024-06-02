@@ -21,9 +21,7 @@ def get_coindesk_feed():
     for news in newses:
         headline = news.find(class_="card-titlestyles__CardTitleWrapper-sc-1ptmy9y-0 junCw card-title-link")
         title = headline.text.strip()
-        print("title : " + title)
         link = url + news.a["href"]
-        print("link: " + link)
 
         # article page
         article_html = requests.get(link)
@@ -33,14 +31,10 @@ def get_coindesk_feed():
             "p.m.", "PM").replace("a.m.", "AM")
         date_object = datetime.strptime(article_date, "%B %d, %Y at %I:%M %p UTC")
         formatted_date = date_object.strftime("%Y-%m-%d %H:%M:%S")
-        print("date: " + formatted_date)
 
         article_content = article_soup.find(class_="contentstyle__StyledWrapper-sc-g5cdrh-0 gkcZwU composer-content")
         article_text = article_content.text.strip()
         # strip() - delete the big spaces
-
-        print("text: " + article_text)
-        print("")
 
         feed.append([website_name, title, link, formatted_date, article_text])
     return feed
