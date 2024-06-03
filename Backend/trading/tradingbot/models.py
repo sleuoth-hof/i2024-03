@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+import os
+from trading import settings
 
 class MarketNews(models.Model):
     CATEGORY_CHOICES = (
@@ -44,3 +46,10 @@ class Cache(models.Model):
 
     def __str__(self):
         return self
+    
+class CSVFile(models.Model):
+    file_name = models.CharField(max_length=255)
+    file_path = models.FilePathField(path=os.path.join(settings.MEDIA_ROOT, 'csv_files'))
+
+    def __str__(self):
+        return self.file_name

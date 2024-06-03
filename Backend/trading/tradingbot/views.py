@@ -12,6 +12,48 @@ import websocket
 import requests
 import json
 
+from django.http import HttpResponse
+from django.template import loader
+from django.shortcuts import render
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from .models import CSVFile
+from .forms import CSVFileForm
+
+def generate_graph(file_path):
+    # Load CSV file into a DataFrame
+    df = pd.read_csv(file_path)
+    df["Date"] = pd.to_datetime(df["Date"])
+    
+    # Generate a simple graph using Seaborn (example: plot first column vs second column)
+    plt.figure()
+    sns_plot = sns.lineplot(x="Date",y="Open", data=df)
+    graph_path = 'media/graph.png'
+    sns.set_theme(style="darkgrid")
+    sns_plot.figure.savefig(graph_path)
+    plt.close()
+    return graph_path
+
+def index(request):
+    graph_path = None
+    if request.method == 'POST':
+        form = CSVFileForm(request.POST)
+        if form.is_valid():
+            csv_file = form.cleaned_data['csv_file']
+            graph_path = generate_graph(csv_file.file_path)
+    else:
+        form = CSVFileForm()
+    return render(request, 'index.html', {'form': form, 'graph_path': graph_path})
+
+def main(request):
+  template = loader.get_template('main.html')
+  return HttpResponse(template.render())
+
+def test(request):
+  template = loader.get_template('index.html')
+  return HttpResponse(template.render())
+
 class MarketNewsView(APIView):
     def get(self, request):
         category = request.query_params.get('category')
