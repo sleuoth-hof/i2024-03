@@ -25,7 +25,6 @@ body {
     )
     rgb(var(--background-start-rgb));
   margin: 0;
-  padding: 0;
   padding-top: 4rem;
 }
 
@@ -33,4 +32,8 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+html {
+  scroll-behavior: smooth;
 }

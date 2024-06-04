@@ -1,8 +1,11 @@
-const FeedSection = () => {
+import React from 'react';
+
+const FeedSection: React.FC = () => {
   return (
-    <section id="feed" className="min-h-screen flex items-start justify-start bg-gray-800 text-white py-8 mt-16">
+    <section id="feed" className="min-h-screen flex items-center justify-center bg-gray-800 text-white py-8">
       <div className="container mx-auto px-4">
-        <h2 className="text-2xl font-bold mb-4">Feed</h2>
+        <h2 className="text-2xl font-bold text-white mb-8">Feed</h2>
+        <p></p>
       </div>
     </section>
   );
