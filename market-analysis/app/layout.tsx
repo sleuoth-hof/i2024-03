@@ -1,14 +1,9 @@
-"use client";
-
-import { ReactNode } from 'react';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import '../styles/globals.css';
-import useSmoothScroll from './components/hooks/useSmoothScroll';
+import React, { ReactNode } from 'react';
+import Navbar from '../app/components/Navbar';
+import Footer from '../app/components/Footer';
+import '../styles/globals.css'; 
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  useSmoothScroll();
-
   return (
     <html lang="en">
       <body>
@@ -19,4 +14,3 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     </html>
   );
 }
-
