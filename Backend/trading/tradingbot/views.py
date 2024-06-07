@@ -206,3 +206,20 @@ class TradeWebSocket(APIView):
 
         return Response(trade_data, status=status.HTTP_200_OK)
 '''
+class StockRecommendationView(APIView):
+    def get(self, request, pk=None):
+        if pk is not None:
+            stock_recommendation = get_object_or_404(StockRecommendation, pk=pk)
+            serializer = StockRecommendationSerializer(stock_recommendation)
+            return Response(serializer.data)
+        else:
+            stock_recommendations = StockRecommendation.objects.all()
+            serializer = StockRecommendationSerializer(stock_recommendations, many=True)
+            return Response(serializer.data)
+
+    def post(self, request):
+        serializer = StockRecommendationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
