@@ -11,6 +11,8 @@ import finnhub
 import websocket
 import requests
 import json
+from .models import TradeSignal
+from .serializers import TradeSignalSerializer
 
 from django.http import HttpResponse
 from django.template import loader
@@ -223,3 +225,15 @@ class StockRecommendationView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class TradeSignalCreateView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = TradeSignalSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, *args, **kwargs):
+        trade_signals = TradeSignal.objects.all()
+        serializer = TradeSignalSerializer(trade_signals, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
