@@ -7,7 +7,6 @@ from .serializers import MarketNewsSerializer
 from .serializers import StockRecommendationSerializer
 from .serializers import CacheSerializer
 from django.shortcuts import get_object_or_404
-import finnhub
 import websocket
 import requests
 import json
@@ -20,6 +19,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from .models import CSVFile
 from .forms import CSVFileForm
+from .finnhub_utils import get_stock_price
+from django.http import JsonResponse
+from .finnhub_utils import get_stock_price
+
+def get_price(request, ticker):
+    price = get_stock_price(ticker)
+    return JsonResponse({'ticker': ticker, 'price': price})
 
 def generate_graph(file_path):
     # Load CSV file into a DataFrame
@@ -38,13 +44,30 @@ def generate_graph(file_path):
 def index(request):
     graph_path = None
     if request.method == 'POST':
-        form = CSVFileForm(request.POST)
-        if form.is_valid():
-            csv_file = form.cleaned_data['csv_file']
-            graph_path = generate_graph(csv_file.file_path)
-    else:
-        form = CSVFileForm()
-    return render(request, 'index.html', {'form': form, 'graph_path': graph_path})
+        csv_file_id = request.POST.get('csv_file_id')
+        csv_file = get_object_or_404(CSVFile, id=csv_file_id)
+        graph_path = generate_graph(csv_file.file_path)
+    
+    csv_files = CSVFile.objects.all()
+    csv_file_data = []
+
+    for csv_file in csv_files:
+        file_name = csv_file.file_name[:-4]  # Remove .csv extension
+        price = get_stock_price(file_name)
+        csv_file_data.append({'file_name': file_name, 'price': price, 'id': csv_file.id})
+
+    return render(request, 'index.html', {'csv_file_data': csv_file_data, 'graph_path': graph_path})
+
+#def index(request):
+#    graph_path = None
+#    if request.method == 'POST':
+#        form = CSVFileForm(request.POST)
+#        if form.is_valid():
+#            csv_file = form.cleaned_data['csv_file']
+#            graph_path = generate_graph(csv_file.file_path)
+#    else:
+#        form = CSVFileForm()
+#    return render(request, 'index.html', {'form': form, 'graph_path': graph_path})
 
 def main(request):
   template = loader.get_template('main.html')
