@@ -5,7 +5,7 @@ from datetime import datetime
 import requests
 
 
-def get_coindesk_feed():
+def get_coindesk_feed(delete_info_days):
     url = "https://www.coindesk.com/"
     website_name = "coindesk.com"
 
@@ -31,6 +31,11 @@ def get_coindesk_feed():
             "p.m.", "PM").replace("a.m.", "AM")
         date_object = datetime.strptime(article_date, "%B %d, %Y at %I:%M %p UTC")
         formatted_date = date_object.strftime("%Y-%m-%d %H:%M:%S")
+        date_obj = datetime.strptime(formatted_date, "%Y-%m-%d %H:%M:%S")
+        current_time = datetime.utcnow()
+        time_difference = current_time - date_obj
+        if time_difference.days > delete_info_days:
+            break
 
         article_content = article_soup.find(class_="contentstyle__StyledWrapper-sc-g5cdrh-0 gkcZwU composer-content")
         article_text = article_content.text.strip()
@@ -40,4 +45,4 @@ def get_coindesk_feed():
     return feed
 
 
-# print(get_coindesk_feed())
+# print(get_coindesk_feed(1))
