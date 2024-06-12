@@ -24,7 +24,7 @@ def get_bbc_news_feed(delete_info_days):
         date_obj = datetime.strptime(formatted_date, "%Y-%m-%d %H:%M:%S")
         current_time = datetime.utcnow()
         time_difference = current_time - date_obj
-        if time_difference.days > DELETE_INFO_DAYS:
+        if time_difference.days > delete_info_days:
             break
 
         response = requests.get(link)
