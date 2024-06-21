@@ -23,9 +23,9 @@ from .finnhub_utils import get_stock_price
 from django.http import JsonResponse
 from .finnhub_utils import get_stock_price
 
-def get_price(request, ticker):
-    price = get_stock_price(ticker)
-    return JsonResponse({'ticker': ticker, 'price': price})
+# def get_price(request, ticker):
+#     price = get_stock_price(ticker)
+#     return JsonResponse({'ticker': ticker, 'price': price})
 
 def generate_graph(file_path):
     # Load CSV file into a DataFrame
@@ -53,8 +53,8 @@ def index(request):
 
     for csv_file in csv_files:
         file_name = csv_file.file_name[:-4]  # Remove .csv extension
-        price = get_stock_price(file_name)
-        csv_file_data.append({'file_name': file_name, 'price': price, 'id': csv_file.id})
+        # price = get_stock_price(file_name)
+        csv_file_data.append({'file_name': file_name, 'id': csv_file.id})
 
     return render(request, 'index.html', {'csv_file_data': csv_file_data, 'graph_path': graph_path})
 

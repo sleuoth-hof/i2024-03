@@ -71,22 +71,22 @@
                                 <button class="btn btn-light search-btn">Search</button>
                             </div>
                             <div class="table-container">
-                            <table id="csvTable" class="table table-dark table-hover stock-table">
-                                <thead>
-                                    <tr>
-                                        <th>Company</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for data in csv_file_data %}
-                                    <tr data-ticker="{{ data.file_name }}" onclick="rowClick('{{ data.id }}')">
-                                        <td>{{ data.file_name }}</td>
-                                        <td class="price">Loading...</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>                    
+                                <table id="csvTable" class="table table-dark table-hover stock-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Company</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for data in csv_file_data %}
+                                        <tr data-ticker="{{ data.file_name }}" onclick="rowClick('{{ data.id }}')">
+                                            <td>{{ data.file_name }}</td>
+                                            <td class="price">Loading...</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>                    
                             </div>
                         </div>
                     </div>
@@ -161,28 +161,11 @@
             </div>
         </div>
     </footer>
-    
+
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Custom JavaScript for fetching prices asynchronously -->
+    <!-- Your JavaScript code -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const rows = document.querySelectorAll('#csvTable tbody tr');
-            rows.forEach(row => {
-                const ticker = row.dataset.ticker;
-                fetch(`/get_price/${ticker}/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const priceCell = row.querySelector('.price');
-                        priceCell.textContent = data.price !== null ? data.price : 'N/A';
-                    })
-                    .catch(error => {
-                        console.error('Error fetching price:', error);
-                    });
-            });
-        });
-
         function searchTable() {
             var input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("searchInput");
@@ -199,7 +182,7 @@
                     } else {
                         tr[i].style.display = "none";
                     }
-                }
+                }       
             }
         }
 
@@ -214,6 +197,50 @@
             document.body.appendChild(form);
             form.submit();
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+        console.log('Page is fully loaded.');
+        const rows = document.querySelectorAll('#csvTable tbody tr');
+            
+        const socket = new WebSocket('ws://localhost:8000/ws/stock_prices/');
+            
+        socket.onopen = function(event) {
+            console.log('WebSocket is open now.');
+            let index = 0;
+            function sendNextTicker() {
+                if (index < rows.length) {
+                    const row = rows[index];
+                    const ticker = row.getAttribute('data-ticker');
+                    socket.send(JSON.stringify({ ticker: ticker }));
+                    index++;
+                    setTimeout(sendNextTicker, 1000); // 1-second delay between requests
+                }
+            }
+            sendNextTicker(); // Start sending tickers
+        };
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            const ticker = data.ticker;
+            const price = data.price;
+            const row = document.querySelector(`tr[data-ticker="${ticker}"]`);
+            if (row) {
+                row.querySelector('.price').innerText = price !== null ? `$${price}` : 'N/A';
+            }
+        };
+
+        socket.onclose = function(event) {
+            console.log('WebSocket is closed now.');
+        };
+
+        socket.onerror = function(error) {
+            console.error('WebSocket error:', error);
+        };
+        });
+
+
+
+
     </script>
 </body>
 </html>

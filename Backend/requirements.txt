@@ -4,3 +4,6 @@ environs
 matplotlib
 seaborn
 pandas
+daphne
+django-ratelimit
+ratelimit
