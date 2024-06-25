@@ -4,9 +4,10 @@ import feedparser
 import requests
 from bs4 import BeautifulSoup
 from dateutil.parser import parse
+from datetime import datetime
 
 
-def get_bbc_news_feed():
+def get_bbc_news_feed(delete_info_days):
     rss_url = "https://feeds.bbci.co.uk/news/rss.xml"
     newses = feedparser.parse(rss_url)
     website_name = "bbc.com"
@@ -20,6 +21,11 @@ def get_bbc_news_feed():
         article_date = news.published
         article_date = parse(article_date)
         formatted_date = article_date.strftime("%Y-%m-%d %H:%M:%S")
+        date_obj = datetime.strptime(formatted_date, "%Y-%m-%d %H:%M:%S")
+        current_time = datetime.utcnow()
+        time_difference = current_time - date_obj
+        if time_difference.days > delete_info_days:
+            break
 
         response = requests.get(link)
 
@@ -39,4 +45,4 @@ def get_bbc_news_feed():
     return feed
 
 
-# print(get_bbc_news_feed())
+# print(get_bbc_news_feed(1))

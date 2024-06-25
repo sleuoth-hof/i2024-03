@@ -1,4 +1,5 @@
 import csv
+import time
 from Feed.collectAllFeed import collect_feed
 
 
@@ -34,6 +35,7 @@ csv_file_pale = "newsDataBase.csv"
 # news_feed = [["test.com", "test_title", "test_link", "test_date", "test_text"],
 #              ["test2.com", "test2_title", "test2_link", "test2_date", "test2_text"],
 #              ["test3.com", "test3_title", "test3_link", "test3_date", "test3_text"]]
-news_feed = collect_feed()
-print(news_feed)
-append_news_to_csv(news_feed, csv_file_pale)
+while True:
+    news_feed = collect_feed()
+    append_news_to_csv(news_feed, csv_file_pale)
+    time.sleep(60)

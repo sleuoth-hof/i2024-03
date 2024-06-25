@@ -53,3 +53,16 @@ class CSVFile(models.Model):
 
     def __str__(self):
         return self.file_name
+    
+class TradeSignal(models.Model):
+    SIGNAL_CHOICES = [
+        ('buy', 'Buy'),
+        ('sell', 'Sell'),
+    ]
+
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    time = models.DateTimeField(auto_now_add=True)
+    signal = models.CharField(max_length=4, choices=SIGNAL_CHOICES)
+
+    def __str__(self):
+        return f"{self.signal} at {self.price} on {self.time}"
