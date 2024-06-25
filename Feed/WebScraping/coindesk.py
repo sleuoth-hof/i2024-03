@@ -29,7 +29,7 @@ def get_coindesk_feed(delete_info_days):
 
         article_date = article_soup.find(class_="typography__StyledTypography-sc-owin6q-0 iOUkmj").text.strip().replace(
             "p.m.", "PM").replace("a.m.", "AM")
-        date_object = datetime.strptime(article_date, "%B %d, %Y at %I:%M %p UTC")
+        date_object = datetime.strptime(article_date, "%b %d, %Y at %I:%M %p UTC")
         formatted_date = date_object.strftime("%Y-%m-%d %H:%M:%S")
         date_obj = datetime.strptime(formatted_date, "%Y-%m-%d %H:%M:%S")
         current_time = datetime.utcnow()
