@@ -1,4 +1,4 @@
-## Test Plan for Crypto and Stock Price Prediction Website
+## Test Plan for Crypto and Stock Suggestion Website
 
 ### Tester: Kadyrmamat
 ### Version: 0.1
@@ -10,29 +10,28 @@
 ### Introduction
 
 #### 1.1 Purpose
-The purpose of this test plan is to define the testing approach, strategy, and scope for the crypto and stock price prediction website using Django and React.js.
+The purpose of this test plan is to define the testing approach, strategy, and scope for the crypto and stock suggestion website using Playwright.
 
 #### 1.2 Scope
-This test plan covers the functional and non-functional testing of the crypto and stock price prediction website.
+This test plan covers the functional and non-functional testing of the crypto and stock suggestion website.
 
 #### 1.3 Objectives
 The objectives of this test plan are:
 - To ensure the website meets the functional and non-functional requirements specified in the requirements document.
 - To identify and report defects in the website.
 - To ensure the website is user-friendly and meets usability requirements.
-- To ensure the website is reliable, scalable, and secure.
-
+- 
 ### Test Items
 The test items for this test plan are:
-- Crypto and stock price prediction website
+- Crypto and stock suggestion website
 
 ### Features to be Tested
 The features to be tested are:
 
-- Prediction Accuracy
+- Suggestion Accuracy (Buy, Sell, Hold)
 - User Interface (Responsiveness and usability)
-- Data Visualization (Charts and graphs for predictions)
-- Historical Data (Viewing past predictions and actual outcomes)
+- Data Visualization (Charts and graphs for suggestions)
+- Historical Data (Viewing past suggestions)
 - User Profile Management (Updating user information)
 - Security (Protection against common vulnerabilities)
 
@@ -54,11 +53,11 @@ The test environment will consist of the following:
 
 ### Test Cases
 
-#### 1. Prediction Accuracy
-**Scenario:** Verify Prediction Accuracy
+#### 1. Suggestion Accuracy
+**Scenario:** Verify Suggestion Accuracy
 - **Given:** New market data is available
 - **When:** The algorithm runs
-- **Then:** The predictions should be compared with actual outcomes for accuracy
+- **Then:** The suggestions (Buy, Sell, Hold) should be compared with market trends for accuracy
 
 #### 2. User Interface
 **Scenario:** Check Responsiveness
@@ -73,10 +72,10 @@ The test environment will consist of the following:
 - **Then:** The data should be displayed in interactive charts and graphs
 
 #### 4. Historical Data
-**Scenario:** View Historical Predictions
-- **Given:** Access to past predictions
+**Scenario:** View Historical Suggestions
+- **Given:** Access to past suggestions
 - **When:** I navigate to the history page
-- **Then:** I should see a list of past predictions and their actual outcomes
+- **Then:** I should see a list of past suggestions
 
 #### 5. User Profile Management
 **Scenario:** Update Profile
@@ -91,8 +90,88 @@ The test environment will consist of the following:
 - **When:** I attempt to inject SQL commands
 - **Then:** The system should prevent SQL injection and display an error message
 
+### Manual Testing of Endpoints
+
+#### 1. GET /main/
+**Description:** Fetch the main page
+- **Method:** GET
+- **URL:** `http://localhost:8000/main/`
+- **Expected Result:** HTML content of the main page is returned.
+
+#### 2. GET /news/
+**Description:** Fetch the latest market news
+- **Method:** GET
+- **URL:** `http://localhost:8000/news/`
+- **Expected Result:** A JSON response containing the latest market news articles.
+
+Example Response:
+```json
+{
+  "status": "success",
+  "data": [
+    {
+      "title": "Market hits all-time high",
+      "content": "The stock market reached an all-time high today with major indices...",
+      "timestamp": "2024-06-26T12:00:00Z"
+    },
+    {
+      "title": "Crypto regulations tightening",
+      "content": "New regulations on cryptocurrency trading are set to be implemented...",
+      "timestamp": "2024-06-26T10:00:00Z"
+    }
+  ]
+}
+```
+
+#### 3. POST /llm/
+**Description:** Process news data for insights
+- **Method:** POST
+- **URL:** `http://localhost:8000/llm/`
+- **Request Body:**
+```json
+{
+  "news_content": "The stock market reached an all-time high today with major indices..."
+}
+```
+- **Expected Result:** A JSON response with insights generated from the news content.
+
+Example Response:
+```json
+{
+  "status": "success",
+  "data": {
+    "insights": "The market is showing strong bullish trends..."
+  }
+}
+```
+
+#### 4. GET /stockllm/
+**Description:** Get stock recommendations
+- **Method:** GET
+- **URL:** `http://localhost:8000/stockllm/`
+- **Expected Result:** A JSON response with stock recommendations.
+
+Example Response:
+```json
+{
+  "status": "success",
+  "data": [
+    {
+      "stock": "AAPL",
+      "suggestion": "Buy",
+      "confidence": "High"
+    },
+    {
+      "stock": "TSLA",
+      "suggestion": "Hold",
+      "confidence": "Medium"
+    }
+  ]
+}
+```
+
 ### Test Schedule
-- **Test plan creation:** 1 day
+- **Test plan creation:** 4 hours
 - **Test case creation:** 2 days
 - **Test execution (functional, performance, security testing):** 3 days
 - **Defect management:** 2 days
@@ -110,8 +189,8 @@ The test environment will consist of the following:
 Example:
 ```
 Running 10 tests using 2 workers
-[chromium] › prediction-accuracy.spec.js:17:5 › Prediction › Verify Accuracy
-Prediction Accurate!
+[chromium] › suggestion-accuracy.spec.js:17:5 › Suggestion › Verify Accuracy
+Suggestion Accurate!
 
 [chromium] › ui.spec.js:34:5 › User Interface › Check Responsiveness
 Responsive Design Verified!
@@ -122,4 +201,4 @@ Responsive Design Verified!
 ```
 
 ### Reports
-Reports will include detailed test execution results, screenshots of issues, and a summary of defects found and resolved.
+Reports will include detailed test execution results, screenshots of issues, and a summary of defects found and resolved. 
