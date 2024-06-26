@@ -1,5 +1,3 @@
-# get last 70 news from bcc.com
-
 import feedparser
 import requests
 from bs4 import BeautifulSoup
@@ -7,7 +5,7 @@ from dateutil.parser import parse
 from datetime import datetime
 
 
-def get_bbc_news_feed(delete_info_days):
+def get_bbc_news_feed(db_title_list, delete_info_days):
     rss_url = "https://feeds.bbci.co.uk/news/rss.xml"
     newses = feedparser.parse(rss_url)
     website_name = "bbc.com"
@@ -16,6 +14,8 @@ def get_bbc_news_feed(delete_info_days):
 
     for news in newses.entries:
         title = news.title
+        if title in db_title_list:
+            break
         link = news.link
 
         article_date = news.published

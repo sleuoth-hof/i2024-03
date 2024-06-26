@@ -3,7 +3,7 @@ from datetime import datetime
 import requests
 
 
-def get_cointelegraph_feed(delete_info_days):
+def get_cointelegraph_feed(db_title_list, delete_info_days):
     url = "https://cointelegraph.com/"
     website_name = "cointelegraph.com"
 
@@ -11,14 +11,17 @@ def get_cointelegraph_feed(delete_info_days):
     # response - answer. make get request to take html document of url
 
     soup = BeautifulSoup(html_doc.text, 'html.parser')
-
-    newses = soup.find_all(class_="post-card")
+    print(soup.find_all("div"))
+    newses = soup.find_all("div", class_="post-card")
+    print(newses)
     feed = []
 
     # into news blocks
     for news in newses:
-        headline = news.find(class_="post-card__title text-headlineMl text-fg-strong !text-19")
+        headline = news.find("")
         title = headline.text.strip()
+        if title in db_title_list:
+            break
         link = url + news.a["href"]
 
         # article page
@@ -47,4 +50,4 @@ def get_cointelegraph_feed(delete_info_days):
     return feed
 
 
-# print(get_cointelegraph_feed(1))
+print(get_cointelegraph_feed([], 1))

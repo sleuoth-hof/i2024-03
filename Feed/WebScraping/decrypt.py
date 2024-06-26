@@ -5,34 +5,21 @@ from dateutil.parser import parse
 from datetime import datetime
 
 
-# abc news rss feed links - https://abcnews.go.com/Site/page/rss-feeds-3520115
-rss_feed_links = ["https://abcnews.go.com/abcnews/topstories", "https://abcnews.go.com/abcnews/usheadlines",
-                  "https://abcnews.go.com/abcnews/internationalheadlines",
-                  "https://abcnews.go.com/abcnews/politicsheadlines", "https://abcnews.go.com/abcnews/moneyheadlines"]
-
-
-def get_abc_news_feed(db_title_list, delete_info_days):
-    all_feeds = []
-    for link in rss_feed_links:
-        all_feeds += get_feed_from_rss_link(db_title_list, link, delete_info_days)
-    return all_feeds
-
-
-def get_feed_from_rss_link(db_title_list, rss_url, delete_info_days):
+def get_decrypt(db_title_list, delete_info_days):
+    rss_url = "https://decrypt.co/"
     newses = feedparser.parse(rss_url)
-    website_name = "abcnews.com"
+    website_name = "decrypt.co"
+
     feed = []
 
     for news in newses.entries:
         title = news.title
         if title in db_title_list:
             break
-
         link = news.link
-        if "video" in link:
-            continue
 
-        article_date = parse(news.published)
+        article_date = news.published
+        article_date = parse(article_date)
         formatted_date = article_date.strftime("%Y-%m-%d %H:%M:%S")
         date_obj = datetime.strptime(formatted_date, "%Y-%m-%d %H:%M:%S")
         current_time = datetime.utcnow()
@@ -51,12 +38,11 @@ def get_feed_from_rss_link(db_title_list, rss_url, delete_info_days):
                 news_text += paragraph.text + ". "
             news_text.split()
 
-            print(website_name, title, link, formatted_date, news_text)
             feed.append([website_name, title, link, formatted_date, news_text])
         else:
-            pass
-            print(">>> Error: ", link, response.status_code)
+            print(">>> bbcNews response Error:", response.status_code)
+
     return feed
 
 
-# print(get_abc_news_feed(1))
+# print(get_bbc_news_feed(1))

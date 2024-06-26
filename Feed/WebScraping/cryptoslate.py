@@ -1,25 +1,24 @@
-# get last 6 news from coindesk.com
-
 from bs4 import BeautifulSoup
 from datetime import datetime
 import requests
 
 
-def get_coindesk_feed(db_title_list, delete_info_days):
-    url = "https://www.coindesk.com/"
-    website_name = "coindesk.com"
+def get_cryptoslate_feed(db_title_list, delete_info_days):
+    url = "https://cryptoslate.com/"
+    website_name = "cryptoslate.com"
 
     html_doc = requests.get(url)
     # response - answer. make get request to take html document of url
 
     soup = BeautifulSoup(html_doc.text, 'html.parser')
-
-    newses = soup.find_all(class_="static-cardstyles__StaticCardWrapper-sc-1kiw3u-0 iiwocm")
+    print(soup.find_all("div"))
+    newses = soup.find_all("div", class_="post-card")
+    print(newses)
     feed = []
 
     # into news blocks
     for news in newses:
-        headline = news.find(class_="card-titlestyles__CardTitleWrapper-sc-1ptmy9y-0 junCw card-title-link")
+        headline = news.find("")
         title = headline.text.strip()
         if title in db_title_list:
             break
@@ -29,9 +28,10 @@ def get_coindesk_feed(db_title_list, delete_info_days):
         article_html = requests.get(link)
         article_soup = BeautifulSoup(article_html.text, 'html.parser')
 
-        article_date = article_soup.find(class_="typography__StyledTypography-sc-owin6q-0 iOUkmj").text.strip().replace(
-            "p.m.", "PM").replace("a.m.", "AM")
-        date_object = datetime.strptime(article_date, "%b %d, %Y at %I:%M %p UTC")
+        time_element = article_soup.find('time')
+        article_date = time_element['datetime']
+
+        date_object = datetime.strptime(article_date, "%B %d, %Y at %I:%M %p UTC")
         formatted_date = date_object.strftime("%Y-%m-%d %H:%M:%S")
         date_obj = datetime.strptime(formatted_date, "%Y-%m-%d %H:%M:%S")
         current_time = datetime.utcnow()
@@ -39,12 +39,15 @@ def get_coindesk_feed(db_title_list, delete_info_days):
         if time_difference.days > delete_info_days:
             break
 
-        article_content = article_soup.find(class_="contentstyle__StyledWrapper-sc-g5cdrh-0 gkcZwU composer-content")
-        article_text = article_content.text.strip()
+        article_text = ""
+        paragraphs = soup.find_all("p")
+        for paragraph in paragraphs:
+            article_text += paragraph.text + ". "
+        article_text.split()
         # strip() - delete the big spaces
 
         feed.append([website_name, title, link, formatted_date, article_text])
     return feed
 
 
-# print(get_coindesk_feed(1))
+print(get_cointelegraph_feed([], 1))
