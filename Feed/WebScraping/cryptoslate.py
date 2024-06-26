@@ -3,9 +3,9 @@ from datetime import datetime
 import requests
 
 
-def get_cointelegraph_feed(db_title_list, delete_info_days):
-    url = "https://cointelegraph.com/"
-    website_name = "cointelegraph.com"
+def get_cryptoslate_feed(db_title_list, delete_info_days):
+    url = "https://cryptoslate.com/"
+    website_name = "cryptoslate.com"
 
     html_doc = requests.get(url)
     # response - answer. make get request to take html document of url
