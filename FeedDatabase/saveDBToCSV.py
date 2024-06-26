@@ -1,28 +1,11 @@
 import csv
 import time
 from Feed.collectAllFeed import collect_feed
-
-
-def existing_titles_list(csv_file_name):
-    existing_titles = []
-    try:
-        with open(csv_file_name, 'r', encoding='utf-8', newline='') as csv_file:
-            csv_reader = csv.reader(csv_file)
-            next(csv_reader)
-            for row in csv_reader:
-                if len(row) > 1:
-                    existing_titles.append(row[1])
-        return existing_titles
-    except FileNotFoundError:
-        pass
-    except Exception as e:
-        pass
-    return existing_titles
+from getTitileList import get_title_list
 
 
 def append_news_to_csv(news_list, csv_file_name):
-    existing_titles = existing_titles_list(csv_file_name)
-    new_news = [news for news in news_list if news[1] not in existing_titles]
+    new_news = [news for news in news_list]
 
     with open(csv_file_name, 'a', encoding='utf-8', newline='') as csv_file:
         csv_writer = csv.writer(csv_file)
@@ -33,9 +16,9 @@ def append_news_to_csv(news_list, csv_file_name):
                                  news[4]])
 
 
-csv_file_pale = "newsDataBase.csv"
-news_feed = collect_feed()
-append_news_to_csv(news_feed, csv_file_pale)
+csv_file_name = "newsDataBase.csv"
+news_feed = collect_feed(csv_file_name)
+append_news_to_csv(news_feed, csv_file_name)
 # while True:
 #     news_feed = collect_feed()
 #     append_news_to_csv(news_feed, csv_file_pale)

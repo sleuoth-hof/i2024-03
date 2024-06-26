@@ -3,7 +3,7 @@ from datetime import datetime
 import requests
 
 
-def get_cointelegraph_feed(delete_info_days):
+def get_cointelegraph_feed(db_title_list, delete_info_days):
     url = "https://cointelegraph.com/"
     website_name = "cointelegraph.com"
 
@@ -19,6 +19,8 @@ def get_cointelegraph_feed(delete_info_days):
     for news in newses:
         headline = news.find(class_="post-card__title text-headlineMl text-fg-strong !text-19")
         title = headline.text.strip()
+        if title in db_title_list:
+            break
         link = url + news.a["href"]
 
         # article page

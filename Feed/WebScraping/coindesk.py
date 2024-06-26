@@ -5,7 +5,7 @@ from datetime import datetime
 import requests
 
 
-def get_coindesk_feed(delete_info_days):
+def get_coindesk_feed(db_title_list, delete_info_days):
     url = "https://www.coindesk.com/"
     website_name = "coindesk.com"
 
@@ -21,6 +21,8 @@ def get_coindesk_feed(delete_info_days):
     for news in newses:
         headline = news.find(class_="card-titlestyles__CardTitleWrapper-sc-1ptmy9y-0 junCw card-title-link")
         title = headline.text.strip()
+        if title in db_title_list:
+            break
         link = url + news.a["href"]
 
         # article page
