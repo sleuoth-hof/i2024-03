@@ -23,16 +23,7 @@ const FeedSection: React.FC = () => {
             </div>
           </div>
           <div className="col-span-2 lg:col-span-2 bg-gray-900 text-white p-6 rounded-lg shadow-lg">
-            <div className="mb-4 flex">
-              <input
-                type="text"
-                placeholder="Search posts..."
-                className="w-full p-2 rounded-lg border border-gray-400 text-gray-800"
-              />
-              <button className="ml-2 bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Search</button>
-            </div>
             <div className="bg-white p-4 rounded-lg border border-gray-400 h-96">
-              <p>picture placeholder</p>
             </div>
           </div>
         </div>
