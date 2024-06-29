@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
                   Feed
                 </Link>
                 <Link href="#prediction" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
-                  Prediction
+                  Trading Bot
                 </Link>
               </div>
             </div>
