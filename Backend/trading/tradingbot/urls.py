@@ -14,4 +14,5 @@ urlpatterns = [
     path("cash/<int:pk>/", views.CacheView.as_view()),  # GET by ID UPDATE by ID
     path('stockllm/', views.StockRecommendationView.as_view()),
     path('tradesignal/' ,views.TradeSignalCreateView.as_view()),
+    path('tradeprice/',views.TradeListCreateAPIView.as_view()),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
