@@ -13,7 +13,7 @@ import requests
 import json
 from .models import TradeSignal
 from .serializers import TradeSignalSerializer
-
+import finnhub
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render
