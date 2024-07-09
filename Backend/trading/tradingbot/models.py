@@ -69,3 +69,13 @@ class Trade(models.Model):
 
     def __str__(self):
         return f"{self.symbol} - {self.timestamp}"
+class Article(models.Model):
+    id = models.AutoField(primary_key=True)
+    website_name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    link = models.URLField(max_length=2000)
+    formatted_date = models.DateTimeField()
+    article_text = models.TextField()
+
+    def __str__(self):
+        return f"{self.title} - {self.website_name}"

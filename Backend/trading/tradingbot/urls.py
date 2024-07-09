@@ -15,4 +15,5 @@ urlpatterns = [
     path('stockllm/', views.StockRecommendationView.as_view()),
     path('tradesignal/' ,views.TradeSignalCreateView.as_view()),
     path('tradeprice/',views.TradeListCreateAPIView.as_view()),
+    path('article/',views.ArticleListCreateAPIView.as_view()),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

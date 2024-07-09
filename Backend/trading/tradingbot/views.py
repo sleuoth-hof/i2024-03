@@ -1,12 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import MarketNews 
+from .models import MarketNews,Article
 from .models import StockRecommendation,Cache,Trade
 from .serializers import MarketNewsSerializer
 from .serializers import StockRecommendationSerializer
 from .serializers import CacheSerializer
-from .serializers import TradeingSerializer
+from .serializers import TradeingSerializer,ArticleSerializer
 from django.shortcuts import get_object_or_404
 import websocket
 import requests
@@ -273,4 +273,16 @@ class TradeListCreateAPIView(APIView):
     def get(self, request, *args, **kwargs):
         trades = Trade.objects.all()
         serializer = TradeingSerializer(trades, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+class ArticleListCreateAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = ArticleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, *args, **kwargs):
+        articles = Article.objects.all()
+        serializer = ArticleSerializer(articles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
