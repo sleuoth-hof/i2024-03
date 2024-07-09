@@ -24,28 +24,21 @@ class MarketNews(models.Model):
     def __str__(self):
         return self.headline
 class StockRecommendation(models.Model):
-    id = models.AutoField(primary_key=True)    
+    id = models.AutoField(primary_key=True)
     stock = models.CharField(max_length=100)
     confidence = models.IntegerField()
     advice = models.CharField(max_length=50)
+    datetime = models.DateTimeField(auto_now_add=True)  
 
     def __str__(self):
-        return self.headline
-
+        return self.stock
 class Cache(models.Model):
-    id = models.AutoField(primary_key=True)    
+    id = models.AutoField(primary_key=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
-    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    expires_at = models.DateTimeField(null=True, blank=True)
-
-    def is_expired(self):
-        if self.expires_at:
-            return timezone.now() > self.expires_at
-        return False
 
     def __str__(self):
-        return self
+        return f"Cache object {self.id} updated at {self.updated_at}"
     
 class CSVFile(models.Model):
     file_name = models.CharField(max_length=255)
@@ -66,3 +59,13 @@ class TradeSignal(models.Model):
 
     def __str__(self):
         return f"{self.signal} at {self.price} on {self.time}"
+    
+class Trade(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    symbol = models.CharField(max_length=10)  # APP 
+    action =models.CharField(max_length=10)
+    currentPrice = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    entryPrice = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.symbol} - {self.timestamp}"

@@ -3,38 +3,103 @@ import json
 import threading
 import time
 import datetime as dt
-
-
-exampleNews = [
-    ("2016-06-30", """Expansion into energy storage: Tesla announced today its entry into the energy storage market with the launch of new home battery products. The move aims to capitalize on growing interest in renewable energy solutions and diversify Tesla's revenue streams beyond electric vehicles.""", 80, 'Buy'),
-    ("2020-03-12", """Impact of global pandemic: Tesla warned today of potential disruptions to its supply chain and production activities due to the ongoing global pandemic. The announcement comes amid growing concerns about the economic impact of the pandemic on the automotive industry.""", 80, 'Hold'),
-    ("2021-06-05", """Investigation into vehicle safety: Tesla's vehicle safety record came under scrutiny today following reports of multiple accidents involving its electric cars. The incidents reignited concerns about the effectiveness of Tesla's Autopilot feature and prompted regulatory investigations into the company's safety practices.""", 60, 'HOLD'),
-    ("2022-04-15", """Battery technology breakthrough: Tesla unveiled today a breakthrough in battery technology that promises to significantly reduce the cost and improve the performance of electric vehicles. The innovation is expected to further solidify Tesla's competitive advantage in the electric vehicle market.""", 80, 'Buy'),
-    ("2022-09-30", """Supply chain disruptions: Tesla warned today of ongoing supply chain disruptions that could impact its production and delivery timelines. The announcement comes amid global supply chain challenges exacerbated by the COVID-19 pandemic and geopolitical tensions.""", 50, 'Hold'),
-    ("2023-08-17", """Regulatory investigation: Tesla disclosed today that it is under investigation by regulatory authorities for alleged safety issues related to its electric cars. The announcement adds to mounting regulatory scrutiny facing Tesla and raises concerns among investors about potential fines and legal liabilities.""", 70, 'Sell'),
-    ("2024-06-26", """Partnership with major tech company: Tesla announced today a strategic partnership with a major technology company to develop next-generation electric vehicle technologies. The collaboration aims to accelerate innovation in the electric vehicle industry and drive sustainable transportation solutions.""", 80, 'Buy')
-]
+import requests
 
 
 timestamps = []
 prices = []
 currentDay = None
 openPosition = False
-startingCash = 100000  
-cash = startingCash   
-buyAmount = 0         
+startingCash = 10
+cash = startingCash
+buyAmount = 0
 buyPrice = 0
 percentageChange = 0
 
- #finhub news
 wsUrl = "wss://ws.finnhub.io?token=cokf2gpr01qq4pkujt6gcokf2gpr01qq4pkujt70"
+backend_url = "http://127.0.0.1:8000/stockllm/"
+backend_start_cash_url = "http://127.0.0.1:8000/cash/2/"
+backend_data = "http://127.0.0.1:8000/tradeprice/"
+
+current_price_interval = 5  
+
+def fetch_stock_llm_data():
+    try:
+        response = requests.get(backend_url)
+        if response.status_code == 200:
+            stock_data = response.json()
+            return stock_data
+        else:
+            print(f"Error fetching data. Status code: {response.status_code}")
+            return None
+    except requests.exceptions.RequestException as e:
+        print(f"HTTP request error: {e}")
+        return None
+
+def fetch_starting_cash():
+    global cash
+    try:
+        response = requests.get(backend_start_cash_url)
+        if response.status_code == 200:
+            cash_data = response.json()
+            cash = float(cash_data['value'])
+            print(f"Starting cash successfully fetched: {cash:.2f} USD")
+        else:
+            print(f"Error fetching starting cash. Status code: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"HTTP request error: {e}")
+
+def update_cash(new_cash_value):
+    try:
+        response = requests.put(backend_start_cash_url, json={"value": new_cash_value})
+        if response.status_code == 200:
+            print(f"Cash successfully updated to {new_cash_value:.2f} USD")
+        else:
+            print(f"Error updating cash value. Status code: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"HTTP request error: {e}")
+
+def post_trade_data(symbol, action, current_price, entry_price):
+    try:
+        data = {
+            "symbol": symbol,
+            "action": action,
+            "currentPrice": current_price,
+            "entryPrice": entry_price
+        }
+        response = requests.post(backend_data, json=data)
+        if response.status_code == 201:
+            print(f"Trade entry successfully created: {data}")
+        else:
+            print(f"Error creating trade entry. Status code: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"HTTP request error: {e}")
+
+def send_current_price():
+    global openPosition, buyPrice
+    if openPosition and prices:
+        current_price = prices[-1]  
+        try:
+            data = {
+                "symbol": "AAPL",
+                "action": "UPDATE",
+                "currentPrice": current_price,
+                "entryPrice": buyPrice
+            }
+            response = requests.post(backend_data, json=data)
+            if response.status_code == 201:
+                print(f"Current price update successfully sent: {current_price}")
+            else:
+                print(f"Error sending current price update. Status code: {response.status_code}")
+        except requests.exceptions.RequestException as e:
+            print(f"HTTP request error: {e}")
+        threading.Timer(current_price_interval, send_current_price).start()
 
 def onMessage(ws, message):
     global currentDay, openPosition, cash, buyAmount, buyPrice, percentageChange
     data = json.loads(message)
 
     if 'data' in data and len(data['data']) > 0:
-
         trades = data['data']
 
         for trade in trades:
@@ -43,7 +108,7 @@ def onMessage(ws, message):
             timestamps.append(dt.datetime.fromtimestamp(timestamp / 1000.0))
             prices.append(price)
          
-            print(f"live price: {price}")
+            print(f"Live price: {price}")
             
             date = dt.datetime.fromtimestamp(timestamp / 1000.0).strftime('%Y-%m-%d')
           
@@ -57,101 +122,101 @@ def onError(ws, error):
     print(error)
 
 def onClose(ws):
-    print("WebSocket closed ")
+    print("WebSocket closed")
 
 def onOpen(ws):
-
-  
-    ws.send('{"type":"subscribe","symbol":"BINANCE:BTCUSDT"}')
+    ws.send('{"type":"subscribe","symbol":"AAPL"}')
 
 def websocketThread():
-    
     ws = websocket.WebSocketApp(wsUrl, on_message=onMessage, on_error=onError, on_close=onClose)
-
     ws.on_open = onOpen
     ws.run_forever()
 
 def startWebsocket():
-
-
     thread = threading.Thread(target=websocketThread)
-
     thread.start()
 
 def applyStrategy(timestamp, price):
     global openPosition, cash, buyAmount, buyPrice, percentageChange
 
     date = dt.datetime.fromtimestamp(timestamp / 1000.0).strftime('%Y-%m-%d')
-    
- 
-    for newsDate, newsText, confidence, advice in exampleNews:
-        if date == newsDate:
-            print(f"{timestamp}: News foundet for the date ,News: - {newsText}")
-            if confidence >= 70:  
-                if advice == 'Buy':
-                    print(f"{timestamp}: buy signal detectet {price}")
+    stock_llm_data = fetch_stock_llm_data()
+
+    if stock_llm_data:
+       
+
+        current_aapl_recommendations = [entry for entry in stock_llm_data if entry['stock'] == 'AAPL' and entry['datetime'].startswith(dt.datetime.now().strftime('%Y-%m-%d'))]
+
+        for recommendation in current_aapl_recommendations:
+            confidence = recommendation['confidence']
+            advice = recommendation['advice']
+
+            if confidence >= 70:
+                if advice.upper() == 'BUY':
+                    print(f"{timestamp}: Buy signal detected for AAPL {price}")
                     if not openPosition:
-
-                        buyAmount = int(cash / price)  
-
+                        buyAmount = int(cash / price)
                         buyPrice = price
-
                         cash -= buyAmount * price
-
-                        print(f"{timestamp}: boght {buyAmount} shares at price {price},  balance: {cash:.2f} USD")
-                        openPosition = True  
-                        
-                                        #timer only for the test to  30 seconds 
-                        timer = threading.Timer(30, sellPositions, args=[timestamp, price])
-
-                        timer.start()
-                elif advice == 'Sell':
-
-                    print(f"{timestamp}: Sell signal detected {price}")
+                        print(f"{timestamp}: Bought {buyAmount} shares at price {price}, balance: {cash:.2f} USD")
+                        openPosition = True
+                        post_trade_data("AAPL", "BUY", price, buyPrice)  
+                          
+                        threading.Timer(1200, sellPositions, args=[timestamp, price]).start()# 20 minutes = 1200 
+                        send_current_price() 
+                elif advice.upper() == 'SELL':
+                    print(f"{timestamp}: Sell signal detected for AAPL {price}")
                     if openPosition:
-                       
                         percentageChange = ((price - buyPrice) / buyPrice) * 100
-                       
-
                         cash += buyAmount * price
-                        print(f"{timestamp}: Sold {buyAmount} shares at price {price}, balance: {cash:.2f} USD, percentage change: {percentageChange:.2f}%")
-                        openPosition = False 
-                else:
 
+                        print(f"{timestamp}: Sold {buyAmount} shares at price {price}, balance: {cash:.2f} USD, percentage change: {percentageChange:.2f}%")
+
+                        update_cash(cash)  
+                        post_trade_data("AAPL", "SELL", price, buyPrice) 
+
+                        openPosition = False
+                else:
                     print(f"{timestamp}: Hold")
-            break
+    else:
+        print(f"{timestamp}: No data received from backend route.")
 
 def sellPositions(timestamp, price):
-
     global openPosition, cash, buyAmount, buyPrice, percentageChange
 
     if openPosition:
-      
         percentageChange = ((price - buyPrice) / buyPrice) * 100
-        print( "price"+price)
+        cash += (buyAmount * price)
 
-        print("amount"+buyAmount)
-        cash += (buyAmount * price) #change to  dezimal  error in  price calculation 
+        print(f"{timestamp}: Sold all position at Price {price}, balance: {cash:.2f}  percentage change: {percentageChange:.2f}%")
+        update_cash(cash)  
 
-        print(f"{timestamp}: Sold all positions {price},balance: {cash:.2f} USD, percentage change: {percentageChange:.2f}%")
+        post_trade_data("AAPL", "SELL", price, buyPrice)  
         openPosition = False
-
-
 
 def printCurrentPosition(currentPrice):
     global openPosition, cash, buyAmount, buyPrice, percentageChange
 
     if openPosition:
         currentValue = buyAmount * currentPrice
-
+        print(currentPrice)
         profitLoss = currentValue - (buyAmount * buyPrice)
 
         percentageChangeCurrent = (profitLoss / (buyAmount * buyPrice)) * 100
-        print(f"Current Position - Buy Price: {buyPrice:.2f}, Amount: {buyAmount},  balance: {cash:.2f} USD, Current value: {currentValue:.2f} USD, Percentage : {percentageChangeCurrent:.2f}%")
+
+        print(f"Current position - Purchase price: {buyPrice:.2f}, Amount: {buyAmount}, Balance: {cash:.2f} USD, Current value: {currentValue:.2f} USD, Percentage: {percentageChangeCurrent:.2f}%")
+
+def sellAllPositions():
+    global openPosition
+
+    if openPosition:
+        print("Selling all positions...")
+        sellPositions(dt.datetime.now(), prices[-1])  
+        print("Sale successfully completed")
 
 if __name__ == "__main__":
+    fetch_starting_cash()  
     startWebsocket()
+    threading.Timer(600, sellAllPositions).start() 
 
-    time.sleep(30)
-
-
+    time.sleep(35)  

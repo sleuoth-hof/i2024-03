@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import MarketNews, StockRecommendation, Cache,TradeSignal
+from .models import MarketNews, StockRecommendation, Cache,TradeSignal,Trade
 
 class MarketNewsSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,13 +8,18 @@ class MarketNewsSerializer(serializers.ModelSerializer):
 class StockRecommendationSerializer(serializers.ModelSerializer):
     class Meta:
         model = StockRecommendation
-        fields = ('stock', 'confidence', 'advice')
+        fields = ('id', 'stock', 'confidence', 'advice', 'datetime')
 class CacheSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cache
-        fields = ('id', 'value', 'created_at', 'updated_at', 'expires_at')
+        fields = ('id', 'value', 'updated_at')
 
 class TradeSignalSerializer(serializers.ModelSerializer):
     class Meta:
         model = TradeSignal
         fields = ['price', 'time', 'signal']
+
+class TradeingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Trade
+        fields = ('id', 'timestamp', 'symbol', 'action','currentPrice','entryPrice')
